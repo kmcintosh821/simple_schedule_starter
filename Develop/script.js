@@ -2,6 +2,37 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
+    for (time = 9; time <= 17; time++) {
+      var timeblock = document.getElementById("hour-" + time);
+      var description = timeblock.getElementsByClassName("description");
+      var saveBtn = timeblock.querySelector(".saveBtn")
+
+      saveBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        var agendaItem = {
+          timeblock: timeblock.id,
+          savedText: description.value
+        };
+
+        localStorage.setItem("agendaItem" + time, JSON.stringify(agendaItem));
+
+        showSavedValue(time);
+        colorTimeblock(time);
+      })
+    }
+
+    function showSavedValue(timeIndex) {
+      var savedAgendaItem = JSON.parse(localStorage.getItem("agendaItem" + timeIndex));
+      if (savedAgendaItem !== null) {
+        description.textContent = savedAgendaItem.savedText;
+      }
+    }
+
+    function colorTimeblock(timeIndex) {
+  
+    }
+
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
