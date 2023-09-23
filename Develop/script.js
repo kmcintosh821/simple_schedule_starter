@@ -1,37 +1,36 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
-$(function () {
-    for (time = 9; time <= 17; time++) {
-      var timeblock = document.getElementById("hour-" + time);
-      var description = timeblock.getElementsByClassName("description");
-      var saveBtn = timeblock.querySelector(".saveBtn")
+var time = 9;
 
-      saveBtn.addEventListener("click", function(event) {
-        event.preventDefault();
-
-        var agendaItem = {
-          timeblock: timeblock.id,
-          savedText: description.value
-        };
-
-        localStorage.setItem("agendaItem" + time, JSON.stringify(agendaItem));
-
-        showSavedValue(time);
-        colorTimeblock(time);
-      })
-    }
-
-    function showSavedValue(timeIndex) {
-      var savedAgendaItem = JSON.parse(localStorage.getItem("agendaItem" + timeIndex));
-      if (savedAgendaItem !== null) {
-        description.textContent = savedAgendaItem.savedText;
-      }
-    }
-
-    function colorTimeblock(timeIndex) {
+$(function createSaveButtons() {
+  var timeblock = document.getElementById("hour-" + time);
+  var text = timeblock.querySelector("#text" + time);
+  var saveBtn = timeblock.querySelector(".saveBtn")
   
+  var savedAgendaItem = JSON.parse(localStorage.getItem("agendaItem" + time));
+  if (savedAgendaItem !== null) {
+    text.textContent = savedAgendaItem.text;
+  colorTimeblock(time);
+
+  saveBtn.addEventListener("click", function(event) {
+
+    var agendaItem = {
+      timeblock: timeblock.id,
+      text: text.value.trim()
+    };
+
+    localStorage.setItem("agendaItem" + time, JSON.stringify(agendaItem));
+    console.log(agendaItem);
+  })
+
+  function showSavedValue(time) {
     }
+  }
+  
+  function colorTimeblock(timeIndex) {
+    
+  }
 
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
@@ -51,4 +50,9 @@ $(function () {
   // attribute of each time-block be used to do this?
   //
   // TODO: Add code to display the current date in the header of the page.
+
+  time++;
+  if (time <= 17) {
+    createSaveButtons;
+  }
 });
